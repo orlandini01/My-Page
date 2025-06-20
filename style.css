@@ -56,10 +56,30 @@ h2 {
     color: white;
 }
 
+.btn.primary,
+a.btn.primary {
+  background-color: #007BFF; /* ou a cor original do botão */
+  color: white;              /* cor do texto */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;     /* REMOVE O SUBLINHADO */
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+   font-weight: 500;
+}
+
 .btn.primary:hover {
     background-color: #2563eb;
 }
 
+
+.btn.primary:hover,
+a.btn.primary:hover {
+  background-color: #0056b3; /* cor ao passar o mouse */
+}
 .btn.secondary {
     border: 1px solid #60a5fa;
     background-color: transparent;

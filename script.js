@@ -59,28 +59,3 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('section').forEach(section => {
     observer.observe(section);
 });
-
-
-
-// Certificados
-
-let currentSlide = 0;
-const slides = document.querySelectorAll(".certificate");
-
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.classList.toggle("active", i === index);
-    });
-}
-
-function prevSlide() {
-    currentSlide = (currentSlide === 0) ? slides.length - 1 : currentSlide - 1;
-    showSlide(currentSlide);
-}
-
-function nextSlide() {
-    currentSlide = (currentSlide === slides.length - 1) ? 0 : currentSlide + 1;
-    showSlide(currentSlide);
-}
-
-showSlide(currentSlide);

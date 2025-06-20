@@ -24,8 +24,10 @@
                 <button class="btn primary" onclick="scrollToSection('about')">Sobre Mim</button>
                 <button class="btn primary" onclick="scrollToSection('skills')">Habilidades</button>
                 <button class="btn primary" onclick="scrollToSection('projects')">Projetos</button>
-                <button class="btn primary" onclick="scrollToSection('certificates')">Certificados</button>
-                <button class="btn primary" onclick="scrollToSection('contact')">Contato</button>
+                <a href="https://drive.google.com/drive/folders/1DChi-ZDAkmaGAdAd5UL9BHMlbHw1TpVs?usp=drive_link"
+                    class="btn primary" target="_blank" rel="noopener noreferrer">
+                    Certificados
+                </a> <button class="btn primary" onclick="scrollToSection('contact')">Contato</button>
             </div>
         </div>
     </header>
@@ -42,11 +44,17 @@
                 <div class="about-text">
                     <h2>Sobre Mim</h2>
                     <p>Meu nome é Piersilvio Orlandini, estudante do 5º período de Sistemas de Informação na UniLaSalle.
-                        Possuo formação em cursos introdutórios de RPA, conhecimentos básicos em inglês e nível
-                        intermediário em italiano. Atualmente, estou cursando novas formações para aprimorar meus
-                        conhecimentos e me desenvolver na área de tecnologia. Além disso, atuo como estagiário na
-                        empresa JD System, desempenhando a função de tester. Sou uma pessoa proativa, comunicativa,
-                        dinâmica e com grande interesse em adquirir novos conhecimentos.</p>
+                        Atualmente, sou estagiário na Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP),
+                        onde atuo com ferramentas de dados e também realizo testes de software, contribuindo para a
+                        qualidade e eficiência dos sistemas utilizados.
+
+                        Tenho formação em cursos introdutórios de RPA (Automação Robótica de Processos), conhecimentos
+                        básicos em inglês(fazendo aulas particulares para o aprimoramento) e nível intermediário em
+                        italiano. Estou sempre em busca de aprendizado contínuo e atualmente me dedico a novas formações
+                        para ampliar minhas competências na área de tecnologia.
+
+                        Sou uma pessoa proativa, comunicativa, dinâmica e com grande interesse em evoluir
+                        profissionalmente, contribuindo com soluções práticas e eficazes no ambiente de trabalho..</p>
                 </div>
             </div>
         </div>
@@ -93,8 +101,8 @@
                             <line x1="6" y1="18" x2="6.01" y2="18" />
                         </svg>
                     </div>
-                    <h3>Arquitetura de Redes</h3>
-                    <p>Infraestrutura e Conectividade</p>
+                    <h3>Análise de Dados</h3>
+                    <p>Excel, BI, Oracle</p>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon">
@@ -194,31 +202,6 @@
         </div>
     </section>
 
-    <!-- Certificados -->
-    <section id="certificates" class="certificates">
-        <div class="container">
-            <h2>Certificados</h2>
-            <div class="carousel-container">
-                <button class="prev" onclick="prevSlide()">&#10094;</button>
-                <div class="carousel">
-                    <img src="automacao_enade.png" class="certificate" alt="Certificado 1">
-                    <img src="secure_bot.png" class="certificate" alt="Certificado 2">
-                    <img src="IA-naPratica.png" class="certificate" alt="Certificado 3">
-                    <img src="Did_you.png" class="certificate" alt="Certificado 4">
-                    <img src="gettin-started.png" class="certificate" alt="Certificado 5">
-                    <img src="deployment.png" class="certificate" alt="Certificado 6">
-                    <img src="design.png" class="certificate" alt="Certificado 7">
-                    <img src="excel-santander.png" class="certificate" alt="Certificado 8">
-
-
-
-
-                </div>
-                <button class="next" onclick="nextSlide()">&#10095;</button>
-            </div>
-        </div>
-    </section>
-
 
 
 
@@ -229,8 +212,9 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>Contato</h2>
+
             <div class="social-links">
-                <a href="https://github.com/orlandini01" class="social-link">
+                <a href="https://github.com/orlandini01" class="social-link" target="_blank">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path
@@ -238,7 +222,8 @@
                         <path d="M9 18c-4.51 2-5-2-7-2" />
                     </svg>
                 </a>
-                <a href="https://www.linkedin.com/in/pier-orlandini-1112p/" class="social-link">
+
+                <a href="https://www.linkedin.com/in/pier-orlandini-1112p/" class="social-link" target="_blank">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -247,17 +232,24 @@
                     </svg>
                 </a>
             </div>
-            <form id="contact-form" class="contact-form">
+
+            <!-- Formulário com envio real via FormSubmit -->
+            <form action="https://formsubmit.co/orlandinipier41@gmail.com" method="POST" class="contact-form">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Seu email" required>
+                    <input type="email" name="email" placeholder="Seu email" required>
                 </div>
                 <div class="form-group">
-                    <textarea id="message" placeholder="Sua mensagem" rows="4" required></textarea>
+                    <textarea name="message" placeholder="Sua mensagem" rows="4" required></textarea>
                 </div>
+                <!-- Proteção contra spam -->
+                <input type="hidden" name="_captcha" value="false">
+                <!-- Redirecionamento após envio (opcional) -->
+                <!-- <input type="hidden" name="_next" value="https://seusite.com/obrigado.html"> -->
                 <button type="submit" class="btn primary">Enviar Mensagem</button>
             </form>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer>
