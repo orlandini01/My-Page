@@ -175,8 +175,7 @@
     .hero-photo {
       width: 100%; border-radius: 16px;
       display: block; position: relative; z-index: 0;
-      filter: grayscale(15%) contrast(1.05);
-      mix-blend-mode: luminosity;
+      filter: contrast(1.05) brightness(1.02);
     }
     .photo-container {
       position: relative; z-index: 1;
@@ -949,15 +948,58 @@ function initObserver() {
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 }
 
-// ── CONTACT FORM ──────────────────────────────────────
-function sendEmail() {
-  const name = document.getElementById('fname').value.trim();
-  const email = document.getElementById('femail').value.trim();
+// ── CONTACT FORM (Formspree) ──────────────────────────
+const FORMSPREE_URL = 'https://formspree.io/f/xvzjzlaq';
+
+async function sendEmail() {
+  const name    = document.getElementById('fname').value.trim();
+  const email   = document.getElementById('femail').value.trim();
   const subject = document.getElementById('fsubject').value.trim();
-  const msg = document.getElementById('fmessage').value.trim();
-  if (!name || !email || !msg) return;
-  const body = `Nome: ${name}\nE-mail: ${email}\n\n${msg}`;
-  window.location.href = `mailto:orlandinipier41@gmail.com?subject=${encodeURIComponent(subject || 'Contato via portfólio')}&body=${encodeURIComponent(body)}`;
+  const msg     = document.getElementById('fmessage').value.trim();
+  const btn     = document.querySelector('#contact .btn-primary');
+
+  if (!name || !email || !msg) {
+    const warn = { pt: 'Preencha nome, e-mail e mensagem.', en: 'Please fill name, email and message.', it: 'Compila nome, email e messaggio.' };
+    showFormFeedback('⚠️ ' + warn[currentLang], 'warn');
+    return;
+  }
+
+  btn.disabled = true;
+  const sending = { pt: 'Enviando...', en: 'Sending...', it: 'Invio...' };
+  btn.innerHTML = '<span style="opacity:.6">⏳ ' + sending[currentLang] + '</span>';
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject: subject || 'Contato via portfólio', message: msg })
+    });
+    if (res.ok) {
+      const ok = { pt: 'Mensagem enviada! Retorno em breve.', en: "Message sent! I'll reply soon.", it: 'Messaggio inviato! Ti rispondo presto.' };
+      showFormFeedback('✅ ' + ok[currentLang], 'ok');
+      ['fname','femail','fsubject','fmessage'].forEach(id => document.getElementById(id).value = '');
+    } else { throw new Error(); }
+  } catch {
+    const err = { pt: 'Erro ao enviar. Tente novamente.', en: 'Error sending. Please try again.', it: "Errore nell'invio. Riprova." };
+    showFormFeedback('❌ ' + err[currentLang], 'err');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg><span data-i18n="form_send">${translations[currentLang].form_send}</span>`;
+}
+
+function showFormFeedback(msg, type) {
+  let el = document.getElementById('formFeedback');
+  if (!el) {
+    el = document.createElement('p');
+    el.id = 'formFeedback';
+    el.style.cssText = 'font-size:.85rem;margin-top:.25rem;border-radius:6px;padding:.6rem .9rem;';
+    document.querySelector('.contact-form').appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.background = type === 'ok' ? 'rgba(0,200,100,0.1)' : type === 'warn' ? 'rgba(255,170,0,0.1)' : 'rgba(220,50,50,0.1)';
+  el.style.color = type === 'ok' ? '#00c864' : type === 'warn' ? '#FFA500' : '#ff5555';
+  setTimeout(() => { if (el) el.textContent = ''; }, 5000);
 }
 
 // ── MOBILE MENU ──────────────────────────────────────
