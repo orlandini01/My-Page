@@ -1,262 +1,974 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon-32x32.png" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piersilvio Orlandini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0A0A0F;
+      --bg2: #111118;
+      --card: #16161F;
+      --card2: #1E1E2A;
+      --accent: #00B4D8;
+      --accent2: #0077A8;
+      --text: #E8E8F0;
+      --muted: #6B7280;
+      --border: rgba(0,180,216,0.12);
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
 
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.1rem; font-weight: 700; color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .lang-switcher { display: flex; gap: 0.35rem; }
+    .lang-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.75rem; font-weight: 600;
+      padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer;
+      transition: all 0.2s; letter-spacing: 0.05em;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+    .menu-btn {
+      display: none; background: none; border: none; cursor: pointer;
+      color: var(--text); font-size: 1.4rem;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 100px 5% 60px;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-glow {
+      position: absolute; top: 10%; left: -10%;
+      width: 60vw; height: 60vw; max-width: 700px; max-height: 700px;
+      background: radial-gradient(circle, rgba(0,180,216,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .hero-name {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.03em; color: var(--text);
+    }
+    .hero-role-wrap {
+      margin: 1rem 0 1.5rem;
+      min-height: 2.2rem;
+    }
+    .hero-role {
+      font-family: var(--mono); font-size: 1.05rem;
+      color: var(--accent); display: inline;
+    }
+    .cursor {
+      display: inline-block; width: 2px; height: 1.1em;
+      background: var(--accent); margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-bio {
+      color: var(--muted); font-size: 0.95rem;
+      max-width: 520px; line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent); color: #0A0A0F;
+      padding: 0.7rem 1.4rem; border-radius: 6px;
+      font-weight: 700; font-size: 0.875rem; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #00c8f0; transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.7rem 1.4rem; border-radius: 6px;
+      font-weight: 600; font-size: 0.875rem; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .hero-socials { display: flex; gap: 1rem; margin-top: 1.75rem; }
+    .social-link {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 8px;
+      border: 1px solid var(--border); color: var(--muted);
+      text-decoration: none; transition: all 0.2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); }
+    .social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* Photo side */
+    .hero-photo-wrap {
+      display: flex; justify-content: center; align-items: flex-end;
+      position: relative;
+    }
+    .hero-photo-frame {
+      position: relative; width: 340px; max-width: 90vw;
+    }
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%);
+      z-index: 1; border-radius: 16px;
+    }
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent) 0%, transparent 50%);
+      z-index: 0;
+      opacity: 0.3;
+    }
+    .hero-photo {
+      width: 100%; border-radius: 16px;
+      display: block; position: relative; z-index: 0;
+      filter: grayscale(15%) contrast(1.05);
+      mix-blend-mode: luminosity;
+    }
+    .photo-container {
+      position: relative; z-index: 1;
+      background: var(--card);
+      border-radius: 16px; overflow: hidden;
+    }
+    .photo-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, rgba(0,180,216,0.04), rgba(10,10,15,0.85));
+      border-radius: 16px;
+    }
+    .badge-floating {
+      position: absolute; bottom: 1.5rem; left: 1.5rem; z-index: 10;
+      background: rgba(10,10,15,0.92);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem; border-radius: 8px;
+      backdrop-filter: blur(8px);
+    }
+    .badge-floating .badge-title {
+      font-size: 0.8rem; font-weight: 700; color: var(--text);
+    }
+    .badge-floating .badge-sub {
+      font-size: 0.7rem; color: var(--accent); font-family: var(--mono);
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 5%; }
+    .section-label {
+      font-family: var(--mono); font-size: 0.75rem;
+      color: var(--accent); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .section-title::after {
+      content: '';
+      display: block; width: 48px; height: 3px;
+      background: var(--accent); border-radius: 2px;
+      margin-top: 0.6rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start; margin-top: 2.5rem;
+    }
+    .about-text { color: var(--muted); font-size: 0.95rem; line-height: 1.8; }
+    .about-text p + p { margin-top: 1rem; }
+    .highlight { color: var(--accent); font-weight: 600; }
+    .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .about-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .about-card:hover { border-color: var(--accent); }
+    .about-card-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .about-card-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .about-card-sub { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .skill-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .skill-card-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .skill-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(0,180,216,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--accent);
+    }
+    .skill-card-name { font-size: 0.9rem; font-weight: 700; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.72rem; font-weight: 500;
+      padding: 0.2rem 0.55rem; border-radius: 4px;
+      background: rgba(0,180,216,0.08);
+      color: var(--accent); border: 1px solid rgba(0,180,216,0.15);
+    }
+    .tag.evolving {
+      background: rgba(255,170,0,0.08);
+      color: #FFA500; border-color: rgba(255,170,0,0.2);
+    }
+
+    /* ── TIMELINE (destaque) ── */
+    #timeline { background: var(--bg2); }
+    .timeline { margin-top: 2.5rem; position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 14px; top: 8px; bottom: 8px;
+      width: 1px; background: var(--border);
+    }
+    .tl-item {
+      display: flex; gap: 2rem; margin-bottom: 2rem;
+      padding-left: 0;
+    }
+    .tl-dot {
+      flex-shrink: 0; width: 28px; height: 28px;
+      border-radius: 50%; background: var(--card);
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--accent); z-index: 1;
+    }
+    .tl-content {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      flex: 1; transition: border-color 0.2s;
+    }
+    .tl-content:hover { border-color: var(--accent); }
+    .tl-date {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); margin-bottom: 0.35rem;
+    }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .tl-org { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .tl-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 2.5rem; align-items: start;
+    }
+    .contact-info-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      margin-bottom: 1rem; color: var(--muted); font-size: 0.9rem;
+    }
+    .contact-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(0,180,216,0.08); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--accent); font-size: 0.9rem;
+    }
+    .contact-item a { color: var(--muted); text-decoration: none; }
+    .contact-item a:hover { color: var(--accent); }
+    .contact-socials { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+    .form-group input, .form-group textarea {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      color: var(--text); font-family: var(--sans); font-size: 0.875rem;
+      outline: none; transition: border-color 0.2s; resize: vertical;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder {
+      color: var(--muted);
+    }
+    .form-group textarea { min-height: 120px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 2rem 5%; text-align: center;
+      color: var(--muted); font-size: 0.82rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; padding-top: 90px; gap: 2.5rem; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo-frame { width: 260px; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+      .menu-btn { display: block; }
+    }
+    @media (max-width: 600px) {
+      .about-cards { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(10,10,15,0.97); flex-direction: column;
+      align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--text); text-decoration: none; font-size: 1.3rem; font-weight: 600;
+    }
+    .mobile-close {
+      position: absolute; top: 1.2rem; right: 5%;
+      background: none; border: none; color: var(--text); font-size: 1.8rem; cursor: pointer;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1; transform: none; }
+      .cursor { animation: none; }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- Seção de topo -->
-    <header class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>Piersilvio Orlandini</h1>
-            <p class="tagline">Desenvolvedor em ascensão | Criando soluções inteligentes</p>
-            <div class="cta-buttons">
-                <button class="btn primary" onclick="window.open('PiersilvioOrlandini.pdf', '_blank')">Visualizar
-                    Currículo</button>
-                <button class="btn primary" onclick="scrollToSection('about')">Sobre Mim</button>
-                <button class="btn primary" onclick="scrollToSection('skills')">Habilidades</button>
-                <button class="btn primary" onclick="scrollToSection('projects')">Projetos</button>
-                <a href="https://drive.google.com/drive/folders/1KEtkDkSAA6SVQomUG_UX_djtS01u4gql?usp=drive_link"
-                    class="btn primary" target="_blank" rel="noopener noreferrer">
-                    Certificados
-                </a> <button class="btn primary" onclick="scrollToSection('contact')">Contato</button>
-            </div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+  <a href="#about" onclick="closeMobileMenu()" data-i18n="nav_about">Sobre</a>
+  <a href="#skills" onclick="closeMobileMenu()" data-i18n="nav_skills">Habilidades</a>
+  <a href="#timeline" onclick="closeMobileMenu()" data-i18n="nav_timeline">Trajetória</a>
+  <a href="#contact" onclick="closeMobileMenu()" data-i18n="nav_contact">Contato</a>
+  <div class="lang-switcher" style="margin-top:1rem">
+    <button class="lang-btn active" onclick="setLang('pt');closeMobileMenu()">PT</button>
+    <button class="lang-btn" onclick="setLang('en');closeMobileMenu()">EN</button>
+    <button class="lang-btn" onclick="setLang('it');closeMobileMenu()">IT</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">pier<span>.</span></span>
+  <ul class="nav-links">
+    <li><a href="#about" data-i18n="nav_about">Sobre</a></li>
+    <li><a href="#skills" data-i18n="nav_skills">Habilidades</a></li>
+    <li><a href="#timeline" data-i18n="nav_timeline">Trajetória</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">Contato</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('it')">IT</button>
+    </div>
+    <button class="menu-btn" onclick="openMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-content">
+    <p class="hero-label">// <span data-i18n="hero_label">Portfólio Pessoal</span></p>
+    <h1 class="hero-name">Piersilvio<br>Orlandini</h1>
+    <div class="hero-role-wrap">
+      <span class="hero-role" id="typedRole"></span><span class="cursor"></span>
+    </div>
+    <p class="hero-bio" data-i18n="hero_bio">
+      Estudante de Sistemas de Informação na UniLaSalle, estagiário na ANP com foco em governança de dados e testes de software. Apaixonado por tecnologia e em busca de crescimento contínuo.
+    </p>
+    <div class="hero-cta">
+      <a href="https://www.linkedin.com/in/pier-orlandini-1112p/" target="_blank" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://drive.google.com/drive/folders/1KEtkDkSAA6SVQomUG_UX_djtS01u4gql?usp=sharing" target="_blank" class="btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.3 2.841A1.5 1.5 0 0 0 4 4.11V19.89a1.5 1.5 0 0 0 2.3 1.269l9.344-7.89a1.5 1.5 0 0 0 0-2.538L6.3 2.84z"/><path d="M20.604 9.635a1.5 1.5 0 0 1 0 2.53l-3.105 2.122L14.354 12l3.145-2.387 3.105 2.022z" style="opacity:0"/><path d="M7 18.5V5.5L17.5 12 7 18.5z"/></svg>
+        <span data-i18n="hero_cta_portfolio">Ver Portfólios</span>
+      </a>
+      <a href="#contact" class="btn-outline" data-i18n="hero_cta_contact">Entre em contato</a>
+    </div>
+    <div class="hero-socials">
+      <a class="social-link" href="mailto:orlandinipier41@gmail.com" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+      <a class="social-link" href="https://www.linkedin.com/in/pier-orlandini-1112p/" target="_blank" title="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      </a>
+      <a class="social-link" href="https://github.com/orlandini01" target="_blank" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- PHOTO -->
+  <div class="hero-photo-wrap">
+    <div class="hero-photo-frame">
+      <div class="photo-container">
+        <img class="hero-photo" src="IMG-20251022-WA0182.jpg" alt="Piersilvio Orlandini" />
+        <div class="photo-overlay"></div>
+      </div>
+      <div class="badge-floating">
+        <div class="badge-title">Piersilvio Orlandini</div>
+        <div class="badge-sub" data-i18n="badge_role">Estagiário de Governança de Dados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label" data-i18n="about_label">// sobre mim</p>
+  <h2 class="section-title" data-i18n="about_title">Sobre mim</h2>
+  <div class="about-grid fade-up">
+    <div class="about-text">
+      <p data-i18n="about_p1">
+        Sou estudante do <span class="highlight">7º período de Sistemas de Informação</span> na UniLaSalle e atualmente estagiário na <span class="highlight">Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP)</span>, onde atuo com ferramentas de dados e testes de software, contribuindo para a qualidade e eficiência dos sistemas.
+      </p>
+      <p style="margin-top:1rem" data-i18n="about_p2">
+        Em 2025, fui um dos <span class="highlight">30 selecionados entre mais de 1.400 inscritos</span> para a <span class="highlight">Globo Sec Week</span>, evento de imersão em segurança da informação que me proporcionou aprendizados práticos e networking com profissionais da área.
+      </p>
+      <p style="margin-top:1rem" data-i18n="about_p3">
+        Tenho formação em RPA (Automação Robótica de Processos), conhecimento básico de inglês (em aprimoramento com aulas particulares) e nível intermediário de italiano. Proativo, comunicativo e sempre em busca de evoluir profissionalmente.
+      </p>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="about-card-icon">🎓</div>
+        <div class="about-card-title" data-i18n="card_student_title">Estudante</div>
+        <div class="about-card-sub">Sistemas de Informação — UniLaSalle (7º período)</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🏢</div>
+        <div class="about-card-title" data-i18n="card_intern_title">Estagiário</div>
+        <div class="about-card-sub" data-i18n="card_intern_sub">Governança de Dados & QA — ANP</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🌐</div>
+        <div class="about-card-title" data-i18n="card_lang_title">Idiomas</div>
+        <div class="about-card-sub" data-i18n="card_lang_sub">PT (nativo) · EN (básico/cursando) · IT (intermediário)</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🚀</div>
+        <div class="about-card-title" data-i18n="card_goal_title">Objetivo</div>
+        <div class="about-card-sub" data-i18n="card_goal_sub">Crescer em dados, tech e cibersegurança</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label" data-i18n="skills_label">// habilidades</p>
+  <h2 class="section-title" data-i18n="skills_title">Tecnologias & Competências</h2>
+  <div class="skills-grid fade-up">
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-card-name">Front-End</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-card-name">Back-End</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Java</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-card-name" data-i18n="skill_db">Banco de Dados</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">MySQL</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-card-name">RPA</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag" data-i18n="tag_automation">Automação</span>
+        <span class="tag">UiPath</span>
+        <span class="tag">Power Automate</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-card-name">Cybersecurity</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag evolving" data-i18n="tag_evolving">Em evolução 🌱</span>
+        <span class="tag">Globo Sec Week</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <div class="skill-icon">🛠️</div>
+        <div class="skill-card-name" data-i18n="skill_tools">Ferramentas</div>
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">VS Code</span>
+        <span class="tag">Figma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <p class="section-label" data-i18n="timeline_label">// trajetória</p>
+  <h2 class="section-title" data-i18n="timeline_title">Experiência & Destaques</h2>
+  <div class="timeline fade-up">
+
+    <div class="tl-item">
+      <div class="tl-dot">▶</div>
+      <div class="tl-content">
+        <div class="tl-date" data-i18n="tl1_date">2024 — Presente</div>
+        <div class="tl-title" data-i18n="tl1_title">Estagiário de Governança de Dados & QA</div>
+        <div class="tl-org">ANP — Agência Nacional do Petróleo, Gás Natural e Biocombustíveis</div>
+        <div class="tl-desc" data-i18n="tl1_desc">Atuação com ferramentas de dados, governança e testes de software, contribuindo para a qualidade e eficiência dos sistemas da agência reguladora.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">⭐</div>
+      <div class="tl-content">
+        <div class="tl-date">2025</div>
+        <div class="tl-title">Globo Sec Week</div>
+        <div class="tl-org">Globo — Imersão em Segurança da Informação</div>
+        <div class="tl-desc" data-i18n="tl2_desc">Selecionado entre os <strong>30 participantes de mais de 1.400 inscritos</strong>. Evento de imersão com aprendizados práticos em cibersegurança e networking com profissionais da área.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🤖</div>
+      <div class="tl-content">
+        <div class="tl-date" data-i18n="tl3_date">Formação</div>
+        <div class="tl-title" data-i18n="tl3_title">RPA — Automação Robótica de Processos</div>
+        <div class="tl-org" data-i18n="tl3_org">Curso Introdutório</div>
+        <div class="tl-desc" data-i18n="tl3_desc">Capacitação em automação de processos robóticos, aplicando conhecimentos para otimização de fluxos de trabalho.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot">🎓</div>
+      <div class="tl-content">
+        <div class="tl-date" data-i18n="tl4_date">2021 — Presente</div>
+        <div class="tl-title" data-i18n="tl4_title">Bacharelado em Sistemas de Informação</div>
+        <div class="tl-org">UniLaSalle (7º período)</div>
+        <div class="tl-desc" data-i18n="tl4_desc">Formação em desenvolvimento de sistemas, banco de dados, engenharia de software e tecnologias da informação.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label" data-i18n="contact_label">// contato</p>
+  <h2 class="section-title" data-i18n="contact_title">Entre em contato</h2>
+  <div class="contact-grid fade-up">
+    <div>
+      <p class="contact-info-title" data-i18n="contact_sub">Aberto a novas oportunidades, projetos e parcerias. Vamos conversar!</p>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <a href="mailto:orlandinipier41@gmail.com">orlandinipier41@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <span>Niterói, RJ — Brasil</span>
+      </div>
+      <div class="contact-socials">
+        <a class="social-link" href="https://www.linkedin.com/in/pier-orlandini-1112p/" target="_blank" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a class="social-link" href="https://github.com/orlandini01" target="_blank" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="form_name">Nome</label>
+            <input type="text" id="fname" data-i18n-ph="form_name_ph" placeholder="Seu nome" />
+          </div>
+          <div class="form-group">
+            <label data-i18n="form_email">E-mail</label>
+            <input type="email" id="femail" data-i18n-ph="form_email_ph" placeholder="seu@email.com" />
+          </div>
         </div>
-    </header>
-
-
-
-    <!-- Sobre mim -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="profile-image">
-                    <img src="Perfil_Pier.jpeg" alt="Profile">
-                </div>
-                <div class="about-text">
-                    <h2>Sobre Mim</h2>
-                    <p>Meu nome é Piersilvio Orlandini, estudante do 6º período de Sistemas de Informação na UniLaSalle.
-                        Atualmente, sou estagiário na Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP),
-                        onde atuo com ferramentas de dados e também realizo testes de software, contribuindo para a
-                        qualidade e eficiência dos sistemas utilizados.Em 2025, fui um dos 30 participantes selecionados 
-                        entre mais de 1.400 inscritos para a Globo Sec Week, evento de imersão em segurança da informação 
-                        que proporcionou aprendizados práticos e networking com profissionais da área. Tenho formação em 
-                        cursos introdutórios de RPA (Automação Robótica de Processos), conhecimentos básicos em 
-                        inglês(fazendo aulas particulares para o aprimoramento) e nível intermediário em italiano. Estou 
-                        sempre em busca de aprendizado contínuo e atualmente me dedico a novas formações para ampliar minhas 
-                        competências na área de tecnologia. Sou uma pessoa proativa, comunicativa, dinâmica e com grande 
-                        interesse em evoluir profissionalmente, contribuindo com soluções práticas e eficazes no ambiente de trabalho.</p>
-                </div>
-            </div>
+        <div class="form-group">
+          <label data-i18n="form_subject">Assunto</label>
+          <input type="text" id="fsubject" data-i18n-ph="form_subject_ph" placeholder="Sobre o que você quer falar?" />
         </div>
-    </section>
-
-    <!-- Habilidades -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <h2>Habilidades</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6" />
-                            <polyline points="8 6 2 12 8 18" />
-                        </svg>
-                    </div>
-                    <h3>Desenvolvimento Web</h3>
-                    <p>HTML, CSS, JavaScript</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 8V4H8" />
-                            <rect width="16" height="12" x="4" y="8" rx="2" />
-                            <path d="M2 14h2" />
-                            <path d="M20 14h2" />
-                            <path d="M15 13v2" />
-                            <path d="M9 13v2" />
-                        </svg>
-                    </div>
-                    <h3>RPA</h3>
-                    <p>Automação de Processos Robóticos</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
-                            <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
-                            <line x1="6" y1="6" x2="6.01" y2="6" />
-                            <line x1="6" y1="18" x2="6.01" y2="18" />
-                        </svg>
-                    </div>
-                    <h3>Análise de Dados</h3>
-                    <p>Excel, BI, Oracle</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="5" rx="9" ry="3" />
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                        </svg>
-                    </div>
-                    <h3>Linguagens</h3>
-                    <p>C, Java, Python, SQL</p>
-                </div>
-            </div>
+        <div class="form-group">
+          <label data-i18n="form_message">Mensagem</label>
+          <textarea id="fmessage" data-i18n-ph="form_message_ph" placeholder="Sua mensagem..."></textarea>
         </div>
-    </section>
+        <button class="btn-primary" onclick="sendEmail()" style="width:fit-content">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          <span data-i18n="form_send">Enviar mensagem</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Projetos -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2>Principais Projetos</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <video width="600" controls>
-                            <source src="Dentista.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeos.
-                        </video>
-                    </div>
-                    <div class="project-content">
-                        <h3>Sistema de Consultas</h3>
-                        <p>Desenvolvi um sistema personalizado para ajudar um amigo que é dentista. Antes, ele usava um
-                            bloco de notas para gerenciar suas consultas, e vi a oportunidade de criar algo mais
-                            eficiente e profissional. Utilizei tecnologias como HTML, CSS e JavaScript para construir
-                            uma solução prática e adaptada às suas necessidades diárias.</p>
-                        <div class="project-links">
-                            <a href="https://github.com/orlandini01/Programa-consulta" class="project-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path
-                                        d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                                    <path d="M9 18c-4.51 2-5-2-7-2" />
-                                </svg>
-                                Código
-                            </a>
-                            <a href="#" class="project-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="16 18 22 12 16 6" />
-                                    <polyline points="8 6 2 12 8 18" />
-                                </svg>
-                                Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <video width="600" controls>
-                            <source src="Ong.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeos.
-                        </video>
-                    </div>
-                    <div class="project-content">
-                        <h3>Projeto Ong</h3>
-                        <p>Esse é um site que desenvolvi para conclusão da disciplina Desenvolvimento Web III, onde
-                            tinha que utilizar Python. Meu grupo decidiu utlijar Django para integrar o front-end com
-                            back-end. Desenvolvemos um site para ONG para melhorar a administração de padrinho e
-                            doadores.</p>
-                        <div class="project-links">
-                            <a href="https://github.com/CAIO-SANTANA3127/Projeto-DJANGO-SITE-ONG-OZANIMAIS"
-                                class="project-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path
-                                        d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                                    <path d="M9 18c-4.51 2-5-2-7-2" />
-                                </svg>
-                                Código
-                            </a>
-                            <a href="#" class="project-link">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="16 18 22 12 16 6" />
-                                    <polyline points="8 6 2 12 8 18" />
-                                </svg>
-                                Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Piersilvio Orlandini. <span data-i18n="footer_rights">Todos os direitos reservados.</span> —
+    <a href="https://github.com/orlandini01" target="_blank">GitHub</a> ·
+    <a href="https://www.linkedin.com/in/pier-orlandini-1112p/" target="_blank">LinkedIn</a>
+  </p>
+</footer>
 
+<script>
+// ── I18N ──────────────────────────────────────────────
+const translations = {
+  pt: {
+    nav_about: "Sobre",
+    nav_skills: "Habilidades",
+    nav_timeline: "Trajetória",
+    nav_contact: "Contato",
+    hero_label: "Portfólio Pessoal",
+    hero_bio: "Estudante de Sistemas de Informação na UniLaSalle, estagiário na ANP com foco em governança de dados e testes de software. Apaixonado por tecnologia e em busca de crescimento contínuo.",
+    hero_cta_portfolio: "Ver Portfólios",
+    hero_cta_contact: "Entre em contato",
+    badge_role: "Estagiário · Governança de Dados",
+    about_label: "// sobre mim",
+    about_title: "Sobre mim",
+    about_p1: "Sou estudante do <span class='highlight'>7º período de Sistemas de Informação</span> na UniLaSalle e atualmente estagiário na <span class='highlight'>Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP)</span>, onde atuo com ferramentas de dados e testes de software, contribuindo para a qualidade e eficiência dos sistemas.",
+    about_p2: "Em 2025, fui um dos <span class='highlight'>30 selecionados entre mais de 1.400 inscritos</span> para a <span class='highlight'>Globo Sec Week</span>, evento de imersão em segurança da informação que me proporcionou aprendizados práticos e networking com profissionais da área.",
+    about_p3: "Tenho formação em RPA (Automação Robótica de Processos), conhecimento básico de inglês (em aprimoramento com aulas particulares) e nível intermediário de italiano. Proativo, comunicativo e sempre em busca de evoluir profissionalmente.",
+    card_student_title: "Estudante",
+    card_intern_title: "Estagiário",
+    card_intern_sub: "Governança de Dados & QA — ANP",
+    card_lang_title: "Idiomas",
+    card_lang_sub: "PT (nativo) · EN (básico/cursando) · IT (intermediário)",
+    card_goal_title: "Objetivo",
+    card_goal_sub: "Crescer em dados, tech e cibersegurança",
+    skills_label: "// habilidades",
+    skills_title: "Tecnologias & Competências",
+    skill_db: "Banco de Dados",
+    tag_automation: "Automação",
+    tag_evolving: "Em evolução 🌱",
+    skill_tools: "Ferramentas",
+    timeline_label: "// trajetória",
+    timeline_title: "Experiência & Destaques",
+    tl1_date: "2024 — Presente",
+    tl1_title: "Estagiário de Governança de Dados & QA",
+    tl1_desc: "Atuação com ferramentas de dados, governança e testes de software, contribuindo para a qualidade e eficiência dos sistemas da agência reguladora.",
+    tl2_desc: "Selecionado entre os <strong>30 participantes de mais de 1.400 inscritos</strong>. Evento de imersão com aprendizados práticos em cibersegurança e networking com profissionais da área.",
+    tl3_date: "Formação",
+    tl3_title: "RPA — Automação Robótica de Processos",
+    tl3_org: "Curso Introdutório",
+    tl3_desc: "Capacitação em automação de processos robóticos, aplicando conhecimentos para otimização de fluxos de trabalho.",
+    tl4_date: "2021 — Presente",
+    tl4_title: "Bacharelado em Sistemas de Informação",
+    tl4_desc: "Formação em desenvolvimento de sistemas, banco de dados, engenharia de software e tecnologias da informação.",
+    contact_label: "// contato",
+    contact_title: "Entre em contato",
+    contact_sub: "Aberto a novas oportunidades, projetos e parcerias. Vamos conversar!",
+    form_name: "Nome", form_name_ph: "Seu nome",
+    form_email: "E-mail", form_email_ph: "seu@email.com",
+    form_subject: "Assunto", form_subject_ph: "Sobre o que você quer falar?",
+    form_message: "Mensagem", form_message_ph: "Sua mensagem...",
+    form_send: "Enviar mensagem",
+    footer_rights: "Todos os direitos reservados.",
+    typed_roles: ["Estagiário de Governança de Dados", "Estudante de Sistemas de Informação", "Entusiasta de Cibersegurança", "Desenvolvedor em Formação"]
+  },
+  en: {
+    nav_about: "About",
+    nav_skills: "Skills",
+    nav_timeline: "Journey",
+    nav_contact: "Contact",
+    hero_label: "Personal Portfolio",
+    hero_bio: "Information Systems student at UniLaSalle, intern at ANP focused on data governance and software testing. Passionate about technology and continuously learning.",
+    hero_cta_portfolio: "View Portfolios",
+    hero_cta_contact: "Get in touch",
+    badge_role: "Intern · Data Governance",
+    about_label: "// about me",
+    about_title: "About me",
+    about_p1: "I'm a <span class='highlight'>7th-semester Information Systems student</span> at UniLaSalle and currently an intern at the <span class='highlight'>Brazilian National Agency of Petroleum, Natural Gas and Biofuels (ANP)</span>, working with data tools and software testing.",
+    about_p2: "In 2025, I was one of <span class='highlight'>30 selected from over 1,400 applicants</span> for the <span class='highlight'>Globo Sec Week</span>, an immersive cybersecurity event that provided hands-on learning and networking with industry professionals.",
+    about_p3: "I have training in RPA (Robotic Process Automation), basic English skills (currently improving with private lessons), and intermediate Italian. I'm proactive, communicative, and always seeking professional growth.",
+    card_student_title: "Student",
+    card_intern_title: "Intern",
+    card_intern_sub: "Data Governance & QA — ANP",
+    card_lang_title: "Languages",
+    card_lang_sub: "PT (native) · EN (basic/improving) · IT (intermediate)",
+    card_goal_title: "Goal",
+    card_goal_sub: "Grow in data, tech & cybersecurity",
+    skills_label: "// skills",
+    skills_title: "Technologies & Skills",
+    skill_db: "Databases",
+    tag_automation: "Automation",
+    tag_evolving: "Evolving 🌱",
+    skill_tools: "Tools",
+    timeline_label: "// journey",
+    timeline_title: "Experience & Highlights",
+    tl1_date: "2024 — Present",
+    tl1_title: "Data Governance & QA Intern",
+    tl1_desc: "Working with data tools, governance and software testing, contributing to the quality and efficiency of systems at the regulatory agency.",
+    tl2_desc: "Selected among <strong>30 participants from over 1,400 applicants</strong>. Immersive event with hands-on cybersecurity learning and networking with professionals.",
+    tl3_date: "Training",
+    tl3_title: "RPA — Robotic Process Automation",
+    tl3_org: "Introductory Course",
+    tl3_desc: "Training in robotic process automation, applying knowledge to optimize workflows.",
+    tl4_date: "2021 — Present",
+    tl4_title: "Bachelor's in Information Systems",
+    tl4_desc: "Education in systems development, databases, software engineering and information technology.",
+    contact_label: "// contact",
+    contact_title: "Get in touch",
+    contact_sub: "Open to new opportunities, projects and partnerships. Let's talk!",
+    form_name: "Name", form_name_ph: "Your name",
+    form_email: "Email", form_email_ph: "your@email.com",
+    form_subject: "Subject", form_subject_ph: "What do you want to talk about?",
+    form_message: "Message", form_message_ph: "Your message...",
+    form_send: "Send message",
+    footer_rights: "All rights reserved.",
+    typed_roles: ["Data Governance Intern", "Information Systems Student", "Cybersecurity Enthusiast", "Developer in Training"]
+  },
+  it: {
+    nav_about: "Su di me",
+    nav_skills: "Competenze",
+    nav_timeline: "Percorso",
+    nav_contact: "Contatti",
+    hero_label: "Portfolio Personale",
+    hero_bio: "Studente di Sistemi Informativi all'UniLaSalle, tirocinante all'ANP con focus su data governance e test del software. Appassionato di tecnologia e in continua crescita.",
+    hero_cta_portfolio: "Vedi Portfolio",
+    hero_cta_contact: "Contattami",
+    badge_role: "Tirocinante · Data Governance",
+    about_label: "// su di me",
+    about_title: "Su di me",
+    about_p1: "Sono uno studente del <span class='highlight'>7° semestre di Sistemi Informativi</span> all'UniLaSalle e attualmente tirocinante presso l'<span class='highlight'>Agenzia Nazionale del Petrolio, Gas Naturale e Biocarburanti (ANP)</span>, dove lavoro con strumenti di dati e test del software.",
+    about_p2: "Nel 2025, sono stato uno dei <span class='highlight'>30 selezionati tra oltre 1.400 candidati</span> per la <span class='highlight'>Globo Sec Week</span>, un evento di immersione nella sicurezza informatica con apprendimento pratico e networking con professionisti del settore.",
+    about_p3: "Ho formazione in RPA (Robotic Process Automation), conoscenza base dell'inglese (in miglioramento con lezioni private) e livello intermedio di italiano. Sono proattivo, comunicativo e sempre alla ricerca di crescita professionale.",
+    card_student_title: "Studente",
+    card_intern_title: "Tirocinante",
+    card_intern_sub: "Data Governance & QA — ANP",
+    card_lang_title: "Lingue",
+    card_lang_sub: "PT (madrelingua) · EN (base/in corso) · IT (intermedio)",
+    card_goal_title: "Obiettivo",
+    card_goal_sub: "Crescere in dati, tech e cybersecurity",
+    skills_label: "// competenze",
+    skills_title: "Tecnologie & Competenze",
+    skill_db: "Database",
+    tag_automation: "Automazione",
+    tag_evolving: "In evoluzione 🌱",
+    skill_tools: "Strumenti",
+    timeline_label: "// percorso",
+    timeline_title: "Esperienza & Traguardi",
+    tl1_date: "2024 — Presente",
+    tl1_title: "Tirocinante Data Governance & QA",
+    tl1_desc: "Lavoro con strumenti di dati, governance e test del software, contribuendo alla qualità e all'efficienza dei sistemi dell'agenzia regolatrice.",
+    tl2_desc: "Selezionato tra i <strong>30 partecipanti su oltre 1.400 candidati</strong>. Evento di immersione con apprendimento pratico in cybersecurity e networking con professionisti.",
+    tl3_date: "Formazione",
+    tl3_title: "RPA — Robotic Process Automation",
+    tl3_org: "Corso Introduttivo",
+    tl3_desc: "Formazione nell'automazione dei processi robotici, applicando le conoscenze per ottimizzare i flussi di lavoro.",
+    tl4_date: "2021 — Presente",
+    tl4_title: "Laurea in Sistemi Informativi",
+    tl4_desc: "Formazione in sviluppo di sistemi, database, ingegneria del software e tecnologie dell'informazione.",
+    contact_label: "// contatti",
+    contact_title: "Contattami",
+    contact_sub: "Aperto a nuove opportunità, progetti e collaborazioni. Parliamoci!",
+    form_name: "Nome", form_name_ph: "Il tuo nome",
+    form_email: "Email", form_email_ph: "tua@email.com",
+    form_subject: "Oggetto", form_subject_ph: "Di cosa vuoi parlare?",
+    form_message: "Messaggio", form_message_ph: "Il tuo messaggio...",
+    form_send: "Invia messaggio",
+    footer_rights: "Tutti i diritti riservati.",
+    typed_roles: ["Tirocinante Data Governance", "Studente di Sistemi Informativi", "Appassionato di Cybersecurity", "Sviluppatore in Formazione"]
+  }
+};
 
+let currentLang = 'pt';
 
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  document.documentElement.lang = lang;
 
+  // Update all text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
 
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
 
+  // Lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.textContent.trim().toLowerCase() === lang) btn.classList.add('active');
+  });
 
-    <!-- Contato -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Contato</h2>
+  // Restart typing animation
+  startTyping();
+}
 
-            <div class="social-links">
-                <a href="https://github.com/orlandini01" class="social-link" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                        <path d="M9 18c-4.51 2-5-2-7-2" />
-                    </svg>
-                </a>
+// ── TYPING ANIMATION ──────────────────────────────────
+let typingTimeout;
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
 
-                <a href="https://www.linkedin.com/in/pier-orlandini-1112p/" class="social-link" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                        <rect width="4" height="12" x="2" y="9" />
-                        <circle cx="4" cy="4" r="2" />
-                    </svg>
-                </a>
-            </div>
+function startTyping() {
+  clearTimeout(typingTimeout);
+  roleIndex = 0; charIndex = 0; isDeleting = false;
+  document.getElementById('typedRole').textContent = '';
+  type();
+}
 
-            <!-- Formulário com envio real via FormSubmit -->
-            <form action="https://formsubmit.co/orlandinipier41@gmail.com" method="POST" class="contact-form">
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Seu email" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="message" placeholder="Sua mensagem" rows="4" required></textarea>
-                </div>
-                <!-- Proteção contra spam -->
-                <input type="hidden" name="_captcha" value="false">
-                <!-- Redirecionamento após envio (opcional) -->
-                <!-- <input type="hidden" name="_next" value="https://seusite.com/obrigado.html"> -->
-                <button type="submit" class="btn primary">Enviar Mensagem</button>
-            </form>
-        </div>
-    </section>
+function type() {
+  const roles = translations[currentLang].typed_roles;
+  const current = roles[roleIndex];
+  const el = document.getElementById('typedRole');
 
+  if (!isDeleting) {
+    el.textContent = current.slice(0, charIndex + 1);
+    charIndex++;
+    if (charIndex === current.length) {
+      isDeleting = true;
+      typingTimeout = setTimeout(type, 2200);
+    } else {
+      typingTimeout = setTimeout(type, 55);
+    }
+  } else {
+    el.textContent = current.slice(0, charIndex - 1);
+    charIndex--;
+    if (charIndex === 0) {
+      isDeleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+      typingTimeout = setTimeout(type, 400);
+    } else {
+      typingTimeout = setTimeout(type, 30);
+    }
+  }
+}
 
-    <!-- Footer -->
-    <footer>
-        <p class="quote">"Transformando ideias em realidade através do código"</p>
-        <p class="copyright">© 2025 Piersilvio Orlandini. Todos os direitos reservados.</p>
-    </footer>
+// ── SCROLL ANIMATIONS ─────────────────────────────────
+function initObserver() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+}
 
-    <script src="script.js"></script>
+// ── CONTACT FORM ──────────────────────────────────────
+function sendEmail() {
+  const name = document.getElementById('fname').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  const subject = document.getElementById('fsubject').value.trim();
+  const msg = document.getElementById('fmessage').value.trim();
+  if (!name || !email || !msg) return;
+  const body = `Nome: ${name}\nE-mail: ${email}\n\n${msg}`;
+  window.location.href = `mailto:orlandinipier41@gmail.com?subject=${encodeURIComponent(subject || 'Contato via portfólio')}&body=${encodeURIComponent(body)}`;
+}
+
+// ── MOBILE MENU ──────────────────────────────────────
+function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  startTyping();
+  initObserver();
+});
+</script>
 </body>
-
 </html>
